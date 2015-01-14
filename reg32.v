@@ -4,7 +4,7 @@ input [31:0] D;
 input [1:0] byteenable;
 output reg [31:0] Q;
 
-always @(posedge clock) begin
+always @(posedge clock or negedge resetn) begin
 	if (resetn == 0) begin
 		Q = 0;
 	else
