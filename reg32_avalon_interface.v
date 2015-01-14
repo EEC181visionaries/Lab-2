@@ -7,7 +7,7 @@ module reg32_avalon_interface (clock, resetn, write, writedata, read, readdata, 
 	input read, write, chipselect;
 	input [3:0] byteenable;
 	input [31:0] writedata;
-	input [31:0] readdata;
+	output [31:0] readdata;
 
 	// Signal for exporting register contents to the outside of the embedded system
 	output [31:0] Q;
