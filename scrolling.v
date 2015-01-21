@@ -1,9 +1,9 @@
-module scrolling (clock, byteenable, speed_in, out);
+module scrolling (clock, resetn, byteenable, speed_in, val_out);
 
 	// ==== I/O List
-	input clock;
+	input clock, resetn;
 	input [31:0] speed_in;
-	output reg [31:0] out;
+	output reg [31:0] val_out;
 	input [3:0] byteenable;
 
 	// ==== Variables
@@ -52,13 +52,13 @@ module scrolling (clock, byteenable, speed_in, out);
 			count = 0;
 		end
 
-		out[3:0] = hex0;
-		out[7:4] = hex1;
-		out[11:8] = hex2;
-		out[15:12] = hex3;
-		out[19:16] = hex4;
-		out[23:20] = hex5;
-		out[27:24] = hex6;
-		out[31:28] = hex7;
+		val_out[3:0] = hex0;
+		val_out[7:4] = hex1;
+		val_out[11:8] = hex2;
+		val_out[15:12] = hex3;
+		val_out[19:16] = hex4;
+		val_out[23:20] = hex5;
+		val_out[27:24] = hex6;
+		val_out[31:28] = hex7;
 end
 endmodule
