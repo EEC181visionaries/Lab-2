@@ -34,7 +34,18 @@ module lab2(
 	HPS_DDR3_RZQ,
 	HPS_DDR3_WE_N,
     
-    DRAM_CLK
+    // FPGA DRAM
+    DRAM_CLK,
+    DRAM_ADDR,
+    DRAM_BA,
+    DRAM_CAS_N,
+    DRAM_CKE,
+    DRAM_CS_N,
+    DRAM_DQ,
+    DRAM_UDQM,
+    DRAM_LDQM,
+    DRAM_RAS_N,
+    DRAM_WE_N
 );
 
 
@@ -76,12 +87,26 @@ output HPS_DDR3_RESET_N;
 input HPS_DDR3_RZQ;
 output HPS_DDR3_WE_N;
 
+// FPGA SDRAM
+output [12:0] DRAM_ADDR;
+output [1:0] DRAM_BA;
+output DRAM_CAS_N;
+output DRAM_CKE;
+output DRAM_CS_N;
+inout [15:0] DRAM_DQ;
+output DRAM_UDQM;
+output DRAM_LDQM;
+output DRAM_RAS_N;
+output DRAM_WE_N;
+
+
+
 //===================================
 // REG/WIRE declarations
 //===================================
 
-wire [31:0] hex3_hex0;
-wire [15:0] hex5_hex4;
+wire [31:0] hex3_hex0; // Not used
+wire [15:0] hex5_hex4; // Not used
 wire [31:0] REG32;
 assign LEDR[7:0] = REG32[31:24];
 
@@ -101,7 +126,6 @@ hex_7seg CONVERTER5(REG32[23:20],HEX5);
     mysystem u0 (
         .system_ref_clk_clk     (CLOCK_50),     //   system_ref_clk.clk
         .system_ref_reset_reset (~KEY[0]), // system_ref_reset.reset
-        .sys_clk_clk            (DRAM_CLK),            //          sys_clk.clk
         
         .memory_mem_a       (HPS_DDR3_ADDR),       //      memory.mem_a
         .memory_mem_ba      (HPS_DDR3_BA),      //            .mem_ba
@@ -124,6 +148,17 @@ hex_7seg CONVERTER5(REG32[23:20],HEX5);
         .hex3_0bus_export       (hex3_hex0),       //        hex3_0bus.export
         .hex5_4bus_export       (hex5_hex4),       //        hex5_4bus.export
         .hex_to_led_export      (REG32),      //       hex_to_led.export
+        
+        .sdram_wire_addr        (DRAM_ADDR),        //       sdram_wire.addr
+        .sdram_wire_ba          (DRAM_BA),          //                 .ba
+        .sdram_wire_cas_n       (DRAM_CAS_N),       //                 .cas_n
+        .sdram_wire_cke         (DRAM_CKE),         //                 .cke
+        .sdram_wire_cs_n        (DRAM_CS_N),        //                 .cs_n
+        .sdram_wire_dq          (DRAM_DQ),          //                 .dq
+        .sdram_wire_dqm         ({DRAM_UDQM,DRAM_LDQM}),         //                 .dqm
+        .sdram_wire_ras_n       (DRAM_RAS_N),       //                 .ras_n
+        .sdram_wire_we_n        (DRAM_WE_N),         //                 .we_n
+        .sys_clk_clk            (DRAM_CLK)            //          sys_clk.clk
     );
 
 endmodule
@@ -131,7 +166,7 @@ endmodule
 
 
 module hex_7seg (input [3:0] hex,  output reg [0:6] seg);
-parameter ZERO = 7'b000_0001;
+parameter ZERO = 7'b100_0000;
 parameter ONE = 7'b100_1111;
 parameter TWO = 7'b010_0100;
 parameter THREE = 7'b011_0000;
@@ -170,3 +205,4 @@ case (hex)
 endcase
 
 endmodule
+
