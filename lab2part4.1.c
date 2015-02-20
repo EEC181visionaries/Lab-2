@@ -1,4 +1,5 @@
 // Author: Jessica + Chan
+// Scrolling through C code
 
 
 #include <stdio.h>
